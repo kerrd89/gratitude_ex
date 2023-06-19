@@ -1,0 +1,56 @@
+<section class="flex flex-row items-center mb-9">
+  <h1 class="text-grey-900 text-3xl mr-3">Gratitude</h1>
+  <div
+    class="w-[66px] h-[115px] bg-contain bg-no-repeat"
+    style={"background-image: url('#{~p|/images/gratitudejar_icon_black.svg|}')"}
+  >
+  </div>
+</section>
+
+<div class="w-[20rem] mb-9">
+  <.page_heading
+    class="text-grey-800"
+    level={:h2}
+    icon={:user}
+    icon_kind="outline"
+    text={gettext("Create account")}
+  />
+
+  <.form :let={f} for={@changeset} action={~p"/users/register"} class="flex flex-col mt-10">
+    <.input_group
+      form={f}
+      class="mb-4"
+      input_class={auth_input_class()}
+      field={:email}
+      label="Email Address"
+      label_class="sr-only"
+      placeholder="Email Address"
+      type={:email}
+      required={true}
+      autocomplete="email"
+    />
+
+    <.input_group
+      form={f}
+      input_class={auth_input_class()}
+      field={:password}
+      label="Password"
+      label_class="sr-only"
+      placeholder="Password"
+      type={:password}
+      required={true}
+    />
+    <p class="antialiased mb-6 text-xs text-grey-800 mt-1">
+      Password must contain at least 8 characters
+    </p>
+
+    <.button kind="auth">Submit</.button>
+  </.form>
+</div>
+
+<.link
+  href={~p"/users/login"}
+  class="antialiased text-sm text-grey-700 hover:text-vibrant-blue-200 transition-colors duration-150"
+>
+  Sign In
+</.link>

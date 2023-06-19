@@ -1,0 +1,46 @@
+@layer utilities {
+    .btn {
+      @apply font-medium px-4 py-2 rounded-lg disabled:cursor-not-allowed disabled:text-grey-600;
+    }
+  
+    .btn-primary {
+      @apply antialiased border-2 border-vibrant-blue-50 bg-vibrant-blue-50 text-vibrant-blue-500 hover:bg-vibrant-blue-300 hover:border-vibrant-blue-300 hover:text-grey-1000 active:border-vibrant-blue-700 disabled:bg-grey-100 disabled:border-grey-100 disabled:hover:text-grey-700;
+    }
+  
+    .btn-secondary {
+      @apply antialiased bg-transparent text-vibrant-blue-700 border border-vibrant-blue-700 hover:bg-vibrant-blue-50 active:border-2 active:px-[15px] active:py-[7px] disabled:border-grey-600 disabled:hover:bg-transparent;
+    }
+  
+    .btn-disabled {
+      @apply cursor-not-allowed bg-grey-100 border border-grey-100 text-grey-600;
+    }
+  
+    .btn-text-only {
+      @apply antialiased bg-transparent text-vibrant-blue-700 border-vibrant-blue-700 hover:bg-vibrant-blue-100 active:border-2 active:px-[15px] active:py-[7px] disabled:hover:bg-transparent;
+    }
+  
+    .link {
+      @apply underline;
+    }
+  
+    .link-primary {
+      @apply text-vibrant-blue-50-40%;
+    }
+  
+    .input-error {
+      @apply border-vibrant-red-500;
+    }
+  
+    .input-notice {
+      @apply border-information-state-400;
+    }
+  
+    .checkbox {
+      @apply rounded-sm;
+    }
+  
+    .checkbox-primary {
+      @apply text-vibrant-blue-50-40% border-vibrant-blue-50-40% ring-vibrant-blue-50-40%;
+    }
+  }
+  

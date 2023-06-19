@@ -1,0 +1,55 @@
+<h1 class="mb-28"><.logo_with_text /></h1>
+
+<div class="w-[20rem] mb-9">
+  <.page_heading
+    level={:h2}
+    kind="light"
+    icon={:key}
+    icon_kind="outline"
+    text={gettext("Reset Password")}
+  />
+  <p class="antialiased mt-9 mb-2 text-xs text-vibrant-blue-50">
+    Password must contain at least 12 characters.
+  </p>
+
+  <.form
+    :let={f}
+    for={@changeset}
+    as={:credentials}
+    action={~p"/users/reset_password/#{@token}"}
+    class="flex flex-col mt-2"
+  >
+    <.input_group
+      form={f}
+      class="mb-4"
+      input_class={auth_input_class()}
+      field={:password}
+      label="New Password"
+      label_class="sr-only"
+      placeholder="New password"
+      type={:password}
+      required={true}
+    />
+
+    <.input_group
+      form={f}
+      class="mb-4"
+      input_class={auth_input_class()}
+      field={:password_confirmation}
+      label="Confirm new password"
+      label_class="sr-only"
+      placeholder="Confirm new password"
+      type={:password}
+      required={true}
+    />
+
+    <.button phx-disable-with="Resetting..." kind="auth" class="mt-4">Reset password</.button>
+  </.form>
+</div>
+
+<.link
+  href={~p"/users/login"}
+  class="antialiased text-sm text-vibrant-blue-50 hover:text-vibrant-blue-200 transition-colors duration-150"
+>
+  Back to Login
+</.link>

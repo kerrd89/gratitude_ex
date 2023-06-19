@@ -1,0 +1,38 @@
+<div class="flex flex-col justify-between h-full">
+  <.jar_header name={@jar.title} jar_id={@jar.id} />
+  <h2 class="mb-5 text-grey-800">
+    <%= gettext("Recent Entries") %>
+  </h2>
+  <div :for={post <- @user_jar_link.posts}>
+    <.live_component
+      id={"post-summary-card-#{post.id}"}
+      module={GratitudeExWeb.JarsLive.PostSummaryCard}
+      post={post}
+      return_to={~p"/jars/#{@jar.id}"}
+    />
+  </div>
+  <div id="add-post-section">
+    <.form_modal
+      :if={@live_action == :add_entry}
+      id="add-entry-modal"
+      return_to={~p"/jars/#{@jar.id}"}
+    >
+      <.live_component
+        id="add-entry-form"
+        module={GratitudeExWeb.JarsLive.AddEditPostForm}
+        return_to={~p"/jars/#{@jar.id}"}
+        jar_id={@jar.id}
+        user_jar_link_id={@user_jar_link.id}
+      />
+    </.form_modal>
+  </div>
+  <.form_modal :if={@live_action == :edit_entry} id="add-entry-modal">
+    <.live_component
+      id="edit-post-form"
+      module={GratitudeExWeb.JarsLive.AddEditPostForm}
+      return_to={~p"/jars/#{@jar.id}"}
+      post_id={@edit_entry_id}
+      delete_map={@delete_map}
+    />
+  </.form_modal>
+</div>

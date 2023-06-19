@@ -1,0 +1,44 @@
+<h1 class="mb-28"><.logo_with_text /></h1>
+
+<div class="w-[20rem] mb-9">
+  <.page_heading
+    level={:h2}
+    kind="light"
+    icon={:key}
+    icon_kind="outline"
+    text={gettext("Reset Password")}
+  />
+  <p class="antialiased mt-9 mb-2 text-sm text-white">
+    <%= gettext("We will email you instructions on how to reset your password.") %>
+  </p>
+
+  <.form
+    :let={f}
+    for={@conn}
+    as={:credentials}
+    action={~p"/users/reset_password"}
+    class="flex flex-col mt-2"
+  >
+    <.input_group
+      form={f}
+      class="mb-6"
+      input_class={auth_input_class()}
+      field={:email}
+      label={gettext("Email Address")}
+      label_class="sr-only"
+      placeholder={gettext("Email Address")}
+      type={:email}
+      required={true}
+      autocomplete="email"
+    />
+
+    <.button phx-disable-with="Sending..." kind="auth"><%= gettext("Reset Password") %></.button>
+  </.form>
+</div>
+
+<.link
+  href={~p"/users/login"}
+  class="antialiased text-sm text-vibrant-blue-50 hover:text-vibrant-blue-200 transition-colors duration-150"
+>
+  Back to Login
+</.link>

@@ -1,0 +1,11 @@
+<section class="w-4/5">
+  <div :for={notification <- @notifications}>
+    <div>
+      <.live_component
+        id={"notification-summary-card-#{notification.id}"}
+        module={GratitudeExWeb.NotificationsLive.NotificationSummaryCard}
+        notification={notification}
+      />
+    </div>
+  </div>
+</section>

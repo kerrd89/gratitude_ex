@@ -1,0 +1,66 @@
+<section class="flex flex-row items-center mb-9">
+  <h1 class="text-grey-900 text-3xl mr-3">Gratitude</h1>
+  <div
+    class="w-[66px] h-[115px] bg-contain bg-no-repeat"
+    style={"background-image: url('#{~p|/images/gratitudejar_icon_black.svg|}')"}
+  >
+  </div>
+</section>
+
+<div class="w-[20rem] mb-9">
+  <.page_heading
+    class="text-grey-800"
+    level={:h2}
+    icon={:user}
+    icon_kind="outline"
+    text={gettext("Log in")}
+  />
+
+  <p class="mt-2 text-center text-sm text-grey-600">
+    Or
+    <.link navigate={~p"/users/register"} class="font-medium">
+      Register
+    </.link>
+  </p>
+
+  <.form :let={f} for={@conn} action={~p"/users/log_in"} as={:user} class="flex flex-col mt-5">
+    <.input
+      field={f[:email]}
+      label="Email Address"
+      label_class="sr-only"
+      placeholder="Email Address"
+      type="auth_email"
+      required={true}
+      autocomplete="email"
+    />
+
+    <.input
+      field={f[:password]}
+      label="Password"
+      label_class="sr-only"
+      placeholder="Password"
+      type="auth_password"
+      required={true}
+      autocomplete="current-password"
+    />
+
+    <.input_group
+      form={f}
+      class="space-x-0 mb-6"
+      field={:remember_me}
+      label="Remember me"
+      label_class="ml-2 block antialiased !text-grey-800"
+      type={:checkbox}
+      input_class="bg-vibrant-blue-700 text-vibrant-blue-400 focus:ring-0 border-0 focus:border focus:border-vibrant-blue-50"
+    />
+
+    <.button kind="auth">Submit</.button>
+  </.form>
+</div>
+
+<.link
+  href={~p"/users/reset_password"}
+  class="antialiased text-sm text-grey-600 hover:text-vibrant-blue-200 transition-colors duration-150"
+>
+  Forgot Password?
+</.link>

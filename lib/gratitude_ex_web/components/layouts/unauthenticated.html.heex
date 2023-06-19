@@ -1,0 +1,26 @@
+<%!-- <div
+  :if={Map.get(assigns, :debug_info)}
+  data-debug
+  class={["w-full text-right py-1 px-4 fixed z-20", @debug_info.bg_color]}
+>
+  <p class={["uppercase text-xxs font-semibold leading-4", @debug_info.text_color]}>
+    <%= gettext("%{env_name}", env_name: @debug_info.env_name) %>
+  </p>
+</div> --%>
+<div class="bg-gradient-to-b from-white to-grey-100 pt-40 pb-14 h-full">
+  <main class="flex flex-col items-center">
+    <%= if info = Phoenix.Flash.get(@flash, :info) do %>
+      <p class={auth_flash_class("bg-[#E9FDDC] text-vibrant-green-500")}>
+        <%= info %>
+      </p>
+    <% end %>
+
+    <%= if error = Phoenix.Flash.get(@flash, :error) do %>
+      <p class={auth_flash_class("bg-[#FFE7E4] text-vibrant-red-500")}>
+        <%= error %>
+      </p>
+    <% end %>
+
+    <%= @inner_content %>
+  </main>
+</div>
