@@ -3,10 +3,12 @@ defmodule GratitudeEx.Posts do
   The Posts context.
   """
 
-  import Ecto.Query, warn: false
+  import Ecto.Query
   alias GratitudeEx.Repo
 
   alias GratitudeEx.Posts.Post
+
+  @recent_window_for_summaries {:months, -1}
 
   @doc """
   Returns the list of posts.
@@ -102,5 +104,28 @@ defmodule GratitudeEx.Posts do
   """
   def change_post(%Post{} = post, attrs \\ %{}) do
     Post.changeset(post, attrs)
+  end
+
+  def get_recent_posts_for_jar(jar_id, %DateTime{} = since \\ default_recent_date()) do
+    query = from p in Post,
+      where: p.updated_at >= ^since,
+      join: ujl in assoc(p, :user_jar_link),
+      where: ujl.jar_id == ^jar_id,
+      select: p
+
+    Repo.all(query)
+  end
+
+  def summarize_posts(posts) do
+    Enum.reduce(posts, "", fn post, acc ->
+      acc <> "\n" <> post.text
+    end)
+  end
+
+  def default_recent_date do
+    {unit, shift} = @recent_window_for_summaries
+    Date.utc_today()
+    |> Cldr.Calendar.plus(unit, shift)
+    |> DateTime.new!(Time.utc_now())
   end
 end

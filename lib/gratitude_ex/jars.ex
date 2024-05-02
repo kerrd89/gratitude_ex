@@ -86,4 +86,13 @@ defmodule GratitudeEx.Jars do
 
     length(recent_posts) / goal_entry_count
   end
+
+  def get_all_jars_for_summaries() do
+    # TODO: optimize this query
+    query = from j in Jar,
+    where: j.send_summary?,
+    preload: [:notifications]
+
+    Repo.all(query)
+  end
 end

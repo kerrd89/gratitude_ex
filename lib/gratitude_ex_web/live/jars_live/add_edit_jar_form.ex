@@ -66,7 +66,7 @@ defmodule GratitudeExWeb.JarsLive.AddEditJarForm do
             <.input
               type="checkbox"
               field={@form[:send_summary?]}
-              label={gettext("Send me a monthly summary for this jar.")}
+              label={gettext("Send me a summary for this jar")}
               aria-required
             />
             <div :if={to_boolean(@form[:send_summary?].value)}>
@@ -86,7 +86,7 @@ defmodule GratitudeExWeb.JarsLive.AddEditJarForm do
             <.input
               type="select"
               field={@form[:goal_interval]}
-              label={gettext("How would you like to receive those monthly summaries?")}
+              label={gettext("How often do you want to make a post?")}
               options={[
                 {"Weekly", :weekly},
                 {"Monthly", :monthly},

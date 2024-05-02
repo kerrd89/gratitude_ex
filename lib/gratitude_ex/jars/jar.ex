@@ -7,6 +7,7 @@ defmodule GratitudeEx.Jars.Jar do
   import Ecto.Changeset
 
   alias GratitudeEx.Jars.UserJarLink
+  alias GratitudeEx.Notifications.Notification
 
   schema "jars" do
     field :title, :string
@@ -19,6 +20,7 @@ defmodule GratitudeEx.Jars.Jar do
       default: :monthly
 
     has_many :user_jar_links, UserJarLink
+    has_many :notifications, Notification
 
     timestamps()
   end
