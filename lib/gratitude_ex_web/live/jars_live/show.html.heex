@@ -35,4 +35,16 @@
       delete_map={@delete_map}
     />
   </.form_modal>
+  <.modal :if={@live_action == :invite_user} id="invite-user-modal">
+    <:title>
+      <span><%= gettext("Invite others to collaborate on this jar?") %></span>
+    </:title>
+
+    <.live_component
+      id="invite-users"
+      module={GratitudeExWeb.JarsLive.InviteUsersModal}
+      return_to={~p"/jars/#{@jar.id}"}
+      jar_id={@jar.id}
+    />
+  </.modal>
 </div>

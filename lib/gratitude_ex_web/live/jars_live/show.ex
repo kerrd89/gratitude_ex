@@ -10,6 +10,7 @@ defmodule GratitudeExWeb.JarsLive.Show do
   @impl true
   def mount(%{"jar_id" => jar_id} = _params, _session, socket) do
     jar = Jars.get_jar!(jar_id)
+    # TODO: filter this posts query to include just posts for this user
     user_jar_link_preloaded = Repo.preload(socket.assigns.user_jar_link, [:posts])
 
     socket =
@@ -41,6 +42,13 @@ defmodule GratitudeExWeb.JarsLive.Show do
           |> assign(:live_action, :edit_entry)
           |> assign(:edit_entry_id, edit_entry_id)
       end
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("open_invite_modal", _params, socket) do
+    socket = assign(socket, :live_action, :invite_user)
 
     {:noreply, socket}
   end
@@ -94,6 +102,10 @@ defmodule GratitudeExWeb.JarsLive.Show do
           </.button>
           <.button id="edit-jar" class="rounded-full" navigate={~p"/jars/#{@jar_id}/edit"}>
             <span class="text-xs"><%= gettext("Edit Jar") %></span>
+            <%!-- <.live_component id="edit-jar-icon" module={GratitudeExWeb.Icons.Edit} /> --%>
+          </.button>
+          <.button id="invite-user" class="rounded-full" phx-click="open_invite_modal">
+            <span class="text-xs"><%= gettext("Collaborate") %></span>
             <%!-- <.live_component id="edit-jar-icon" module={GratitudeExWeb.Icons.Edit} /> --%>
           </.button>
         </div>
