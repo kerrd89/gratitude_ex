@@ -27,7 +27,9 @@ defmodule GratitudeExWeb.JarsLive.JarSummaryCard do
           <div><%= gettext("%{title}", title: @jar.title) %></div>
         </.link>
         <div>
-          <%= gettext("Progress toward goal %{goal_score}", goal_score: format_percentage!(@jar_score)) %>
+          <%= gettext("Progress toward goal %{goal_score}",
+            goal_score: format_percentage!(@jar_score)
+          ) %>
         </div>
         <div :if={!is_nil(@last_entry)} class="mt-5 text-xs p-2 border-2 rounded">
           <%= to_date_string!(@last_entry.inserted_at) %>

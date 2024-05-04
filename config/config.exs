@@ -38,9 +38,10 @@ config :gratitude_ex, Oban,
   repo: GratitudeEx.Repo,
   plugins: [
     {Oban.Plugins.Pruner, max_age: 60 * 60 * 24},
-    {Oban.Plugins.Cron, crontab: [
-      {"@daily", GratitudeEx.Jobs.Notifications.SendJarSummaries, args: %{starting_jar_id: 1}}
-    ]}
+    {Oban.Plugins.Cron,
+     crontab: [
+       {"@daily", GratitudeEx.Jobs.Notifications.SendJarSummaries, args: %{starting_jar_id: 1}}
+     ]}
   ],
   queues: [default: 10]
 

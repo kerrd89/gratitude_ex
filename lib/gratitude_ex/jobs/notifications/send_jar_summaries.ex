@@ -7,36 +7,43 @@ defmodule GratitudeEx.Jobs.Notifications.SendJarSummaries do
   use Oban.Worker
 
   alias GratitudeEx.Jars
+  alias GratitudeEx.Jars.UserJarLink
+  alias GratitudeEx.Notifications
   alias GratitudeEx.Posts
 
   @impl Oban.Worker
   def perform(%Oban.Job{args: %{"starting_jar_id" => _starting_jar_id}}) do
-    # cut_off = Posts.default_recent_date()
-    # Jars.get_all_jars_for_summaries()
-    # # |> Enum.filter(fn jar ->
-    # #   last_notification = List.first(jar.notifications)
-    # #   is_nil(last_notification) or DateTime.before?(last_notification.inserted_at, cut_off)
-    # # end)
-    # |> Enum.reduce(0, fn jar ->
-    #   Posts.get_recent_posts_for_jar(jar.id)
-    #   # TODO: there are many user_jar_links for each jar, we should send a notification to each user
-    #   # notification_params = %{
-    #   #   ack: false,
-    #   #   message: "Welcome to Gratitude Jar. I hope this application helps you nuture gratitude in your own life as it has in mine.",
-    #   #   type: :summary,
-    #   #   user_id: user_id
-    #   # }
+    cut_off = Posts.default_recent_date()
+    count_summary_notifications_sent = Jars.get_all_jars_for_summaries()
+    |> Enum.filter(fn jar ->
+      last_notification = List.first(jar.notifications)
+      is_nil(last_notification) or DateTime.before?(last_notification.inserted_at, cut_off)
+    end)
+    |> Enum.reduce(0, fn jar, acc ->
+      notification_message = jar.id |> Posts.get_recent_posts_for_jar() |> Posts.summarize_posts()
 
-    #   case Notifications.create_notification(notification_params) do
-    #     {:ok, _notification} ->
-    #       :ok
-    #     {:error, _changeset} ->
-    #       {:cancel, :user_dne}
-    #     end
+      dbg(notification_message)
+      new_notification_count =
+        Enum.reduce(jar.user_jar_links, 0, fn %UserJarLink{user_id: user_id}, acc ->
+          notification_params = %{
+            ack: false,
+            message: notification_message,
+            type: :summary,
+            user_id: user_id
+          }
 
-    #   Notifications.send_jar_summary
-    # end)
-    # IO.inspect("==================== Attempting to send summaries using Oban.Cron ============")
-    # {:ok, {:summaries_sent, 0}}
+          case Notifications.create_notification(notification_params) do
+            {:ok, _notification} ->
+              acc + 1
+
+            {:error, _changeset} ->
+              acc
+          end
+        end)
+
+      acc + new_notification_count
+    end)
+
+    {:ok, {:summaries_sent, count_summary_notifications_sent}}
   end
 end

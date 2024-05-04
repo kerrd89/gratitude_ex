@@ -76,30 +76,49 @@ defmodule GratitudeEx.PostsTest do
   describe "get_recent_posts_for_jar/2" do
     test "returns posts within the default recent date range", %{user_jar_link: user_jar_link} do
       another_jar = Factory.insert(:jar)
-      another_user_jar_link = Factory.insert(:user_jar_link, %{jar_id: another_jar.id, user_id: user_jar_link.user_id})
+
+      another_user_jar_link =
+        Factory.insert(:user_jar_link, %{jar_id: another_jar.id, user_id: user_jar_link.user_id})
 
       today = Date.utc_today()
-      invalid_updated_at = today
-      |> Cldr.Calendar.plus(:months, -1)
-      |> Cldr.Calendar.plus(:days, -1)
-      |> DateTime.new!(Time.utc_now())
 
-      valid_updated_at = today
-      |> Cldr.Calendar.plus(:days, -1)
-      |> DateTime.new!(Time.utc_now())
+      invalid_updated_at =
+        today
+        |> Cldr.Calendar.plus(:months, -1)
+        |> Cldr.Calendar.plus(:days, -1)
+        |> DateTime.new!(Time.utc_now())
 
-      edge_updated_at = today
-      |> Cldr.Calendar.plus(:months, -1)
-      |> DateTime.new!(Time.utc_now())
+      valid_updated_at =
+        today
+        |> Cldr.Calendar.plus(:days, -1)
+        |> DateTime.new!(Time.utc_now())
 
-      _invalid_summary_post = Factory.insert(:post, user_jar_link_id: user_jar_link.id, updated_at: invalid_updated_at)
-      valid_summary_post = Factory.insert(:post, user_jar_link_id: user_jar_link.id, updated_at: valid_updated_at)
-      edge_summary_post = Factory.insert(:post, user_jar_link_id: user_jar_link.id, updated_at: edge_updated_at)
-      _another_jar_summary_post = Factory.insert(:post, user_jar_link_id: another_user_jar_link.id, updated_at: valid_updated_at)
+      edge_updated_at =
+        today
+        |> Cldr.Calendar.plus(:months, -1)
+        |> DateTime.new!(Time.utc_now())
+
+      _invalid_summary_post =
+        Factory.insert(:post, user_jar_link_id: user_jar_link.id, updated_at: invalid_updated_at)
+
+      valid_summary_post =
+        Factory.insert(:post, user_jar_link_id: user_jar_link.id, updated_at: valid_updated_at)
+
+      edge_summary_post =
+        Factory.insert(:post, user_jar_link_id: user_jar_link.id, updated_at: edge_updated_at)
+
+      _another_jar_summary_post =
+        Factory.insert(:post,
+          user_jar_link_id: another_user_jar_link.id,
+          updated_at: valid_updated_at
+        )
 
       assert Enum.count(Posts.get_recent_posts_for_jar(user_jar_link.jar_id)) == 2
 
-      assert Posts.get_recent_posts_for_jar(user_jar_link.jar_id) == [valid_summary_post, edge_summary_post]
+      assert Posts.get_recent_posts_for_jar(user_jar_link.jar_id) == [
+               valid_summary_post,
+               edge_summary_post
+             ]
     end
   end
 end

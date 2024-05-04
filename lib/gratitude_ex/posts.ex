@@ -8,6 +8,7 @@ defmodule GratitudeEx.Posts do
 
   alias GratitudeEx.Posts.Post
 
+  # TODO: this should be configurable
   @recent_window_for_summaries {:months, -1}
 
   @doc """
@@ -107,23 +108,29 @@ defmodule GratitudeEx.Posts do
   end
 
   def get_recent_posts_for_jar(jar_id, %DateTime{} = since \\ default_recent_date()) do
-    query = from p in Post,
-      where: p.updated_at >= ^since,
-      join: ujl in assoc(p, :user_jar_link),
-      where: ujl.jar_id == ^jar_id,
-      select: p
+    query =
+      from p in Post,
+        where: p.updated_at >= ^since,
+        join: ujl in assoc(p, :user_jar_link),
+        where: ujl.jar_id == ^jar_id,
+        select: p
 
     Repo.all(query)
   end
 
+  def summarize_posts([]) do
+    "You didn't enter any posts this month, maybe today is the day to start nurturing gratitude again."
+  end
+
   def summarize_posts(posts) do
     Enum.reduce(posts, "", fn post, acc ->
-      acc <> "\n" <> post.text
+      acc <> "\u2022 " <> post.text <> " \n"
     end)
   end
 
   def default_recent_date do
     {unit, shift} = @recent_window_for_summaries
+
     Date.utc_today()
     |> Cldr.Calendar.plus(unit, shift)
     |> DateTime.new!(Time.utc_now())

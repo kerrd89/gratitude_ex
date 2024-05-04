@@ -88,7 +88,8 @@ defmodule GratitudeEx.Auth do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec register_user(map(), should_generate_notification? :: boolean()) :: {:ok, User.t()} | {:error, Changeset.t()}
+  @spec register_user(map(), should_generate_notification? :: boolean()) ::
+          {:ok, User.t()} | {:error, Changeset.t()}
   def register_user(attrs, should_generate_notification? \\ true) do
     %User{}
     |> User.registration_changeset(attrs)

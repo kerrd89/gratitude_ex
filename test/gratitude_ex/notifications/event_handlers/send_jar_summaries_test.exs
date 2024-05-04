@@ -10,7 +10,7 @@ defmodule GratitudeEx.Jobs.Notifications.SendJarSummariesTest do
       user = Factory.create_user()
       _user_jar_link = Factory.insert(:user_jar_link, user_id: user.id, jar_id: jar.id)
       params = %{starting_jar_id: 1}
-      assert {:ok, {:summaries_sent, 0}} == perform_job(SendJarSummaries, params)
+      assert {:ok, {:summaries_sent, 1}} == perform_job(SendJarSummaries, params)
     end
   end
 end

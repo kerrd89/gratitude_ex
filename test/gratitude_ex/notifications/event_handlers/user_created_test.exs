@@ -17,7 +17,10 @@ defmodule GratitudeEx.Notifications.EventHandlers.UserCreatedTest do
         notification = Repo.get_by(Notification, user_id: user.id)
         assert notification.user_id == user.id
         assert notification.type == :info
-        assert notification.message == "Welcome to Gratitude Jar. I hope this application helps you nuture gratitude in your own life as it has in mine."
+
+        assert notification.message ==
+                 "Welcome to Gratitude Jar. I hope this application helps you nuture gratitude in your own life as it has in mine."
+
         refute notification.ack
         assert is_nil(notification.jar_id)
       end)

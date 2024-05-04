@@ -89,9 +89,10 @@ defmodule GratitudeEx.Jars do
 
   def get_all_jars_for_summaries() do
     # TODO: optimize this query
-    query = from j in Jar,
-    where: j.send_summary?,
-    preload: [:notifications]
+    query =
+      from j in Jar,
+        where: j.send_summary?,
+        preload: [:notifications, :user_jar_links]
 
     Repo.all(query)
   end
